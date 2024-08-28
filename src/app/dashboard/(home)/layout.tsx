@@ -46,9 +46,9 @@ export default function DashboardLayout({
                   asChild
                   className="w-full justify-start"
                 >
-                  <Link href={"/dashboard/airplane"}>
+                  <Link href={"/dashboard/airplanes"}>
                     <Plane className="mr-2 w-4 h-4" />
-                    Airplane
+                    Airplanes
                   </Link>
                 </Button>
 
