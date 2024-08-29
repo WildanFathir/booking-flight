@@ -12,7 +12,7 @@ const CreateAirplanePage: FC = () => {
         <div className="my-5 text-2xl font-bold">Tambah data Airplanes</div>
       </div>
 
-      <FormAirplane />
+      <FormAirplane type="ADD" />
     </div>
   );
 };

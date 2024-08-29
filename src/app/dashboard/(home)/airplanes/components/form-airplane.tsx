@@ -1,24 +1,76 @@
 "use client";
 
+import type { ActionResult } from "@/app/dashboard/(auth)/signin/form/action";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Rect, { type FC } from "react";
+import React, { type FC } from "react";
+import { useFormState, useFormStatus } from "react-dom";
+import { saveAirplane, updateAirplane } from "../lib/actions";
+import type { Airplane } from "@prisma/client";
 
-// interface FormAirplaneProps {
+interface FormAirplaneProps {
+  type?: "ADD" | "EDIT";
+  defaultValues?: Airplane | null;
+}
 
-// }
+const initialFormState: ActionResult = {
+  errorTitle: null,
+  errorDesc: [],
+};
 
-const FormAirplane: FC = () => {
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+
   return (
-    <form className="w-[40%] space-y-4">
+    <Button disabled={pending} className="w-full">
+      Submit
+    </Button>
+  );
+};
+
+const FormAirplane: FC<FormAirplaneProps> = ({ type, defaultValues }) => {
+  const updateAirplaneWithId = (_state: ActionResult, formData: FormData) =>
+    updateAirplane(null, defaultValues?.id!!, formData);
+
+  const [state, formAction] = useFormState(
+    type === "ADD" ? saveAirplane : updateAirplaneWithId,
+    initialFormState
+  );
+
+  return (
+    <form action={formAction} className="w-[40%] space-y-4">
+      {state.errorTitle !== null && (
+        <div className="my-7 bg-red-500 p-4 rounded-lg text-white">
+          <div className="font-bold mb-4">{state.errorTitle}</div>
+
+          <ul className="list-disc list-inside">
+            {state.errorDesc?.map((value, index) => (
+              <li key={index}>{value}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div className="space-y-2">
         <Label htmlFor="code">Kode Pesawat</Label>
-        <Input placeholder="Kode pesawat..." name="code" id="code" required />
+        <Input
+          placeholder="Kode pesawat..."
+          name="code"
+          id="code"
+          defaultValue={defaultValues?.code}
+          required
+        />
       </div>
       <div className="space-y-2">
         <Label htmlFor="nama">Nama Pesawat</Label>
-        <Input placeholder="Nama pesawat..." name="nama" id="nama" required />
+        <Input
+          placeholder="Nama pesawat..."
+          name="nama"
+          id="nama"
+          defaultValue={defaultValues?.name}
+          required
+        />
       </div>
       <div className="space-y-2">
         <Label htmlFor="image">Upload foto</Label>
@@ -30,7 +82,8 @@ const FormAirplane: FC = () => {
           required
         />
       </div>
-      <Button className="w-full">Submit</Button>
+
+      <SubmitButton />
     </form>
   );
 };

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/jpg"];
 
-const MAX_FILE_SIZE = 1024 * 1024 * 2; // 2MB
+const MAX_FILE_SIZE = 200000;
 
 export const airplaneFormSchema = z.object({
   name: z
