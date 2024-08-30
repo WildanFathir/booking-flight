@@ -57,7 +57,7 @@ export default function DashboardLayout({
                   asChild
                   className="w-full justify-start"
                 >
-                  <Link href={"/dashboard/flight"}>
+                  <Link href={"/dashboard/flights"}>
                     <BookOpenText className="mr-2 w-4 h-4" />
                     Flights
                   </Link>

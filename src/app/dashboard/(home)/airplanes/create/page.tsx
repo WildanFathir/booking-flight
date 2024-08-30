@@ -1,9 +1,14 @@
 import React, { type FC } from "react";
 import FormAirplane from "../components/form-airplane";
+import type { Metadata } from "next";
 
 // interface CreateAirplanePageProps {
 
 // }
+
+export const metadata: Metadata = {
+  title: "Dashboard | create data airplanes",
+};
 
 const CreateAirplanePage: FC = () => {
   return (
