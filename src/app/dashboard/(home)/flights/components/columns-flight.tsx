@@ -3,14 +3,19 @@
 import type { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import { Airplane, FilghtSeat, Flight } from "@prisma/client";
+import { Airplane, FlightSeat, Flight } from "@prisma/client";
 import { Pencil } from "lucide-react";
 
 import Link from "next/link";
+import Image from "next/image";
+import { getUrlFile } from "@/lib/supabase";
+import ColumnRouteFlight from "./columns-route-flight";
+import ColumnSeatPrice from "./columns-seatprice";
+import DeleteFlight from "./delete-flight";
 
 export type FlightColumn = Flight & {
   plane: Airplane;
-  seats: FilghtSeat[];
+  seats: FlightSeat[];
 };
 
 export const columns: ColumnDef<FlightColumn>[] = [
@@ -20,7 +25,22 @@ export const columns: ColumnDef<FlightColumn>[] = [
     cell: ({ row }) => {
       const flight = row.original;
 
-      return "Pesawat";
+      const planeImageUrl = getUrlFile(flight.plane.image);
+
+      return (
+        <div className="inline-flex items-center gap-5">
+          <Image
+            src={planeImageUrl}
+            alt="Image Plane"
+            width={120}
+            height={120}
+            className="rounded-xl"
+          />
+          <div className="font-bold">
+            {flight.plane.name} ({flight.plane.code})
+          </div>
+        </div>
+      );
     },
   },
   {
@@ -29,16 +49,16 @@ export const columns: ColumnDef<FlightColumn>[] = [
     cell: ({ row }) => {
       const flight = row.original;
 
-      return "Rute";
+      return <ColumnRouteFlight flight={flight} />;
     },
   },
   {
     accessorKey: "price",
-    header: "Price",
+    header: "Harga / Kursi",
     cell: ({ row }) => {
       const flight = row.original;
 
-      return "Price";
+      return <ColumnSeatPrice flight={flight} />;
     },
   },
   {
@@ -54,7 +74,7 @@ export const columns: ColumnDef<FlightColumn>[] = [
               Edit
             </Link>
           </Button>
-          {/* <DeleteAirplane id={plane.id} /> */}
+          <DeleteFlight id={flight.id} />
         </div>
       );
     },

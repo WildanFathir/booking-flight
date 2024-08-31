@@ -12,26 +12,63 @@ import {
 import { Label } from "@/components/ui/label";
 import React from "react";
 import SubmitButtonForm from "../../components/submit-form-button";
-import type { Airplane } from "@prisma/client";
+import type { Airplane, Flight } from "@prisma/client";
+import { useFormState } from "react-dom";
+import { saveFlight, updateFlight } from "../lib/action";
+import type { ActionResult } from "@/app/dashboard/(auth)/signin/form/action";
+import { dateFormat } from "@/lib/utils";
 
 interface FormFlightProps {
   airplanes: Airplane[];
+  type?: "ADD" | "EDIT";
+  defaultValues?: Flight | null;
 }
 
-export default function FormFlight({ airplanes }: FormFlightProps) {
+const initialFormState: ActionResult = {
+  errorTitle: null,
+  errorDesc: [],
+};
+
+export default function FormFlight({
+  airplanes,
+  defaultValues,
+  type,
+}: FormFlightProps) {
+  const updateFlightById = (_state: ActionResult, formData: FormData) =>
+    updateFlight(null, defaultValues?.id!!, formData);
+
+  const [state, formAction] = useFormState(
+    type === "ADD" ? saveFlight : updateFlightById,
+    initialFormState
+  );
+
+  console.log(defaultValues);
+
   return (
-    <form className="space-y-6">
+    <form action={formAction} className="space-y-6">
+      {state?.errorTitle !== null && (
+        <div className="my-7 bg-red-500 p-4 rounded-lg text-white">
+          <div className="font-bold mb-4">{state.errorTitle}</div>
+
+          <ul className="list-disc list-inside">
+            {state.errorDesc?.map((value, index) => (
+              <li key={index}>{value}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="planeId">Pilih Pesawat</Label>
-          <Select name="planeId">
+          <Select name="planeId" defaultValue={defaultValues?.planeId}>
             <SelectTrigger id="planeId">
               <SelectValue placeholder="Pilih Pesawat" />
             </SelectTrigger>
             <SelectContent>
               {airplanes.map((value) => (
                 <SelectItem key={value.id} value={value.id}>
-                  {value.name} - {value.code}
+                  {value.name} - ({value.code})
                 </SelectItem>
               ))}
             </SelectContent>
@@ -45,6 +82,7 @@ export default function FormFlight({ airplanes }: FormFlightProps) {
             id="price"
             type="number"
             min={0}
+            defaultValue={defaultValues?.price}
             required
           />
           <span className="text-[10px] text-gray-900">
@@ -61,6 +99,7 @@ export default function FormFlight({ airplanes }: FormFlightProps) {
             placeholder="Kota Keberangkatan"
             name="departureCity"
             id="departureCity"
+            defaultValue={defaultValues?.departureCity}
             required
           />
         </div>
@@ -72,6 +111,11 @@ export default function FormFlight({ airplanes }: FormFlightProps) {
             placeholder="Tanggal Keberangkatan"
             name="departureDate"
             id="departureDate"
+            defaultValue={
+              defaultValues?.departureDate
+                ? dateFormat(defaultValues.departureDate, "YYYY-MM-DDTHH:MM")
+                : ""
+            }
             required
           />
         </div>
@@ -81,6 +125,7 @@ export default function FormFlight({ airplanes }: FormFlightProps) {
             placeholder="Kode Kota"
             name="departureCityCode"
             id="departureCityCode"
+            defaultValue={defaultValues?.departureCityCode}
             required
           />
         </div>
@@ -93,6 +138,7 @@ export default function FormFlight({ airplanes }: FormFlightProps) {
             placeholder="Kota Tujuan"
             name="destinationCity"
             id="destinationCity"
+            defaultValue={defaultValues?.destinationCity}
             required
           />
         </div>
@@ -104,6 +150,11 @@ export default function FormFlight({ airplanes }: FormFlightProps) {
             placeholder="Tanggal Tiba"
             name="arrivalDate"
             id="arrivalDate"
+            defaultValue={
+              defaultValues?.arrivalDate
+                ? dateFormat(defaultValues.arrivalDate, "YYYY-MM-DDTHH:MM")
+                : ""
+            }
             required
           />
         </div>
@@ -113,6 +164,7 @@ export default function FormFlight({ airplanes }: FormFlightProps) {
             placeholder="Kode Kota Tujuan"
             name="destinationCityCode"
             id="destinationCityCode"
+            defaultValue={defaultValues?.destinationCityCode}
             required
           />
         </div>

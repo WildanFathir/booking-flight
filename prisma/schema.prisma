@@ -69,11 +69,11 @@ model Flight {
   destinationCity String
   destinationCityCode String
   price Int
-  seats FilghtSeat[]
+  seats FlightSeat[]
   tickets Ticket[]
 }
 
-model FilghtSeat {
+model FlightSeat {
   id String @id @default(cuid())
   flightId String
   flight Flight @relation(fields: [flightId], references: [id])
@@ -91,7 +91,7 @@ model Ticket {
   customerId String
   customer User @relation(fields: [customerId], references: [id])
   seatId String @unique
-  seat FilghtSeat @relation(fields: [seatId], references: [id])
+  seat FlightSeat @relation(fields: [seatId], references: [id])
   bookingDate DateTime
   price BigInt
   status StatusTicket
