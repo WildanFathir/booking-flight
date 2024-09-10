@@ -5,7 +5,7 @@ import { userSchema } from "./validation";
 import { redirect } from "next/navigation";
 
 import bcrypt from "bcrypt";
-import prisma from "../../../../../../lib/prisma";
+import prisma from "../../../../../lib/prisma";
 
 export async function signUpUser(
   prevState: unknown,
