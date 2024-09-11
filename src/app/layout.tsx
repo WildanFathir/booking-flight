@@ -15,11 +15,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.className}text-white font-poppins bg-flysha-black`}
-      >
-        {children}
-      </body>
+      <body className={`${inter.className} font-poppins`}>{children}</body>
     </html>
   );
 }

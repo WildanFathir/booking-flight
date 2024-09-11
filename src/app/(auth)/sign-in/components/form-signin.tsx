@@ -2,6 +2,7 @@
 
 import type { ActionResult } from "@/app/dashboard/(auth)/signin/form/action";
 
+import { Loader } from "lucide-react";
 import { useFormState, useFormStatus } from "react-dom";
 import { signInUser } from "../lib/actions";
 
@@ -20,8 +21,9 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="text-center text-flysha-black rounded-full bg-flysha-light-purple font-bold w-full p-[12px_30px] transition-all duration-300 hover:shadow-[0_10px_20px_0_#B88DFF] disabled:opacity-40"
+      className="flex justify-center items-center text-center text-flysha-black rounded-full bg-flysha-light-purple font-bold w-full p-[12px_30px] transition-all duration-300 hover:shadow-[0_10px_20px_0_#B88DFF] disabled:opacity-70"
     >
+      {pending && <Loader className="animate-spin h-5 w-5 mr-2" />}
       Sign In
     </button>
   );

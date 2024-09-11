@@ -76,17 +76,10 @@ export async function updateAirplane(
 ): Promise<ActionResult> {
   const image = formData.get("image") as File;
 
-  let airplaneFormSchemaUpdate;
+  const airplaneFormSchemaUpdate = airplaneFormSchema.omit({ image: true });
 
-  if (image.size === 0) {
-    airplaneFormSchemaUpdate = airplaneFormSchema.omit({ image: true });
-  } else {
-    airplaneFormSchemaUpdate = airplaneFormSchema;
-  }
-
-  const values = airplaneFormSchema.safeParse({
+  const values = airplaneFormSchemaUpdate.safeParse({
     name: formData.get("nama"),
-    image: formData.get("image"),
     code: formData.get("code"),
   });
 
