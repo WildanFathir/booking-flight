@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import NavbarAuth from "./navbar-auth";
 
 export default function Navbar() {
   return (
@@ -42,12 +43,7 @@ export default function Navbar() {
             About
           </Link>
         </li>
-        <Link
-          href="/sign-in"
-          className="font-bold text-flysha-black bg-flysha-light-purple rounded-full p-[12px_30px] transition-all duration-300 hover:shadow-[0_10px_20px_0_#B88DFF]"
-        >
-          Sign In
-        </Link>
+        <NavbarAuth />
       </ul>
     </nav>
   );
